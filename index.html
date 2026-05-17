@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>点点大 比大小</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:微软雅黑;user-select:none;}
+body{background:#fff8e7;padding:20px;text-align:center;}
+h1{color:#e74c3c;font-size:30px;margin:15px 0;}
+.level{font-size:20px;margin-bottom:20px;}
+.wrap{display:flex;justify-content:center;gap:20px;margin:30px auto;max-width:500px;}
+.box{width:220px;padding:20px;border-radius:20px;background:#fff;box-shadow:0 4px 12px #0002;cursor:pointer;}
+.box:active{transform:scale(0.96);}
+.box.correct{background:#d4edda;border:4px solid #28a745;}
+.box.wrong{background:#f8d7da;border:4px solid #dc3545;}
+.item{font-size:40px;margin:4px;display:inline-block;}
+.tip{font-size:22px;font-weight:bold;margin-top:20px;}
+</style>
+</head>
+<body>
+<h1>🌸点点大🌸</h1>
+<div class="level">第 <span id="lv">1</span> 关</div>
+<div class="wrap">
+  <div class="box" id="left" onclick="clickLeft()"></div>
+  <div class="box" id="right" onclick="clickRight()"></div>
+</div>
+<div class="tip" id="msg">哪边多就点哪边</div>
+
+<script>
+const icons=["🌸","🍎","🐱","🐶","🐟"];
+let leftNum,rightNum,biggerSide,level=1;
+
+function newLevel(){
+leftNum=Math.floor(Math.random()*6)+1;
+rightNum=Math.floor(Math.random()*6)+1;
+while(leftNum===rightNum)rightNum=Math.floor(Math.random()*6)+1;
+biggerSide=leftNum>rightNum?"left":"right";
+let li=icons[Math.floor(Math.random()*5)];
+let ri=icons[Math.floor(Math.random()*5)];
+while(li===ri)ri=icons[Math.floor(Math.random()*5)];
+document.getElementById("left").innerHTML=Array(leftNum).fill(`<span class="item">${li}</span>`).join("");
+document.getElementById("right").innerHTML=Array(rightNum).fill(`<span class="item">${ri}</span>`).join("");
+document.getElementById("lv").innerText=level;
+document.getElementById("msg").innerText="哪边多就点哪边";
+document.getElementById("left").className="box";
+document.getElementById("right").className="box";
+}
+
+function clickLeft(){
+if(biggerSide==="left"){
+document.getElementById("left").classList.add("correct");
+document.getElementById("msg").innerText="✅真棒！";
+level++;setTimeout(newLevel,1200);
+}else{
+document.getElementById("left").classList.add("wrong");
+document.getElementById("right").classList.add("correct");
+document.getElementById("msg").innerText="❌再试试";
+setTimeout(newLevel,1200);
+}
+}
+
+function clickRight(){
+if(biggerSide==="right"){
+document.getElementById("right").classList.add("correct");
+document.getElementById("msg").innerText="✅真棒！";
+level++;setTimeout(newLevel,1200);
+}else{
+document.getElementById("right").classList.add("wrong");
+document.getElementById("left").classList.add("correct");
+document.getElementById("msg").innerText="❌再试试";
+setTimeout(newLevel,1200);
+}
+}
+newLevel();
+</script>
+</body>
+</html>
